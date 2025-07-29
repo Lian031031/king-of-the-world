@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bienvenido</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="contenedor-bienvenida">
+    <h1>Bienvenido, <span id="nombreUsuario"></span></h1>
+    <p class="mensaje-motivacional">
+      Cada refinamiento que haces, cada detalle que ajustas, es una declaración silenciosa de liderazgo.<br>
+      Tu marca no se adapta al mundo. El mundo se adapta a tu marca. 👑
+    </p>
+
+    <!-- Ícono de perfil -->
+    <div id="perfil" class="perfil-circulo" title="Mi perfil" onclick="togglePanel()">
+      <div class="perfil-icono"></div>
+    </div>
+
+    <!-- Panel lateral -->
+    <div id="panelPerfil" class="panel-perfil">
+      <div class="panel-contenido">
+        <span class="cerrar-panel" onclick="togglePanel()">×</span>
+        <ul>
+          <li onclick="cerrarSesion()">Cerrar sesión</li>
+          <!-- <li>Editar perfil</li> -->
+          <!-- <li>Mi cuenta</li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let usuario = null;
+    try {
+      usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
+    } catch (e) {
+      usuario = null;
+    }
+
+    if (!usuario) {
+      window.location.href = "index.html";
+    } else {
+      document.getElementById("nombreUsuario").textContent = usuario.nombre || "Usuario";
+      document.getElementById("perfil").classList.add("visible");
+    }
+
+    function togglePanel() {
+      const panel = document.getElementById("panelPerfil");
+      panel.classList.toggle("activo");
+    }
+  
+
+    function cerrarSesion() {
+      localStorage.removeItem("usuarioActivo");
+      window.location.href = "index.html";
+    }
+
+    document.addEventListener("click", function(e) {
+      const perfil = document.getElementById("perfil");
+      const panel = document.getElementById("panelPerfil");
+      if (!perfil.contains(e.target) && !panel.contains(e.target)) {
+        panel.classList.remove("activo");
+      }
+    });
+
+    window.addEventListener("scroll", () => {
+      document.getElementById("panelPerfil").classList.remove("activo");
+    });
+  
+  
+  </script>
+</body>
+</html>

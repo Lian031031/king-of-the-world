@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>King of the World | Lian</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>King of the World</h1>
+    <p>Visión. Elegancia. Poder.</p>
+  </header>
+
+  <section class="bienvenido">
+    <h2>Bienvenido</h2>
+    <p>Soy Lian. Esta página es mi carta de presentación. Aquí comparto mis servicios, productos y visión como emprendedor.</p>
+  </section>
+
+  <section class="section-mensaje" id="mensaje">
+    <h2>No todos están listos para este nivel.</h2>
+    <p class="mensaje-transformador">
+      Pero si tú lo estás, aquí no solo encontrarás visión y propósito.<br>
+      Encontrarás un equipo que transforma ideas en imperios.
+    </p>
+    <p class="destacado">
+      Únete a los que no esperan el cambio. Lo crean.<br>
+      <span>Hazte miembro. El mundo no se conquista solo.</span>
+    </p>
+    <a href="javascript:void(0);" class="boton-unirse" onclick="mostrarRegistro()">Hazte miembro</a><br>
+    <a href="javascript:void(0);" class="boton-login" onclick="mostrarLogin()">Ya soy miembro</a>
+  </section>
+
+  <!-- Formulario de registro -->
+  <section id="registro">
+    <h2>Hazte miembro</h2>
+    <form>
+      <input type="text" id="nombre" placeholder="Nombre completo" required>
+      <input type="email" id="correo" placeholder="Correo electrónico" required>
+      <input type="password" id="password" placeholder="Contraseña" required>
+      <input type="password" id="confirmar" placeholder="Confirmar contraseña" required>
+      <button type="button" onclick="validarRegistro()">Registrarme</button>
+      <button type="button" onclick="volver()">Volver atrás</button>
+    </form>
+  </section>
+
+  <!-- Formulario de login -->
+  <section id="login">
+    <h2>Inicio de sesión</h2>
+    <form>
+      <input type="email" id="loginCorreo" placeholder="Correo electrónico" required>
+      <input type="password" id="loginPassword" placeholder="Contraseña" required>
+      <button type="button" onclick="validarLogin()">Entrar</button>
+      <button type="button" onclick="volver()">Volver atrás</button>
+      <a href="javascript:void(0);" onclick="mostrarRecuperacion()" style="color:#00796B; font-size:0.9em;">¿Olvidaste tu contraseña?</a>
+    </form>
+  </section>
+
+  <!-- Formulario de recuperación -->
+  <section id="recuperar">
+    <h2>Recuperar contraseña</h2>
+    <form>
+      <input type="email" id="recuperarCorreo" placeholder="Correo registrado" required>
+      <button type="button" onclick="recuperarPassword()">Enviar nueva contraseña</button>
+      <button type="button" onclick="volver()">Volver atrás</button>
+    </form>
+  </section>
+
+  <script src="main.js"></script>
+</body>
+</html>

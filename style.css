@@ -1,0 +1,324 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Fondo general con imagen */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('image_1753582246091.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #00796B;
+}
+
+/* Encabezado */
+header {
+  background-color: #00796B;
+  color: #FFFFFF;
+  text-align: center;
+  padding: 40px 20px;
+}
+.mensaje-transformador {
+  color: #2C2C2C; /* Grafito elegante y sobrio */
+  font-weight: 500;
+  font-size: 1.15em;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+/* Secciones */
+section {
+  padding: 30px 20px;
+  text-align: center;
+}
+
+h2 {
+  color: #00796B;
+}
+
+.bienvenido {
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+/* Botones principales */
+.boton-unirse, .boton-login {
+  display: inline-block;
+  margin-top: 1em;
+  padding: 0.8em 2em;
+  font-size: 1em;
+  background-color: #00796B;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.boton-unirse:hover, .boton-login:hover {
+  background-color: #004D40;
+}
+
+/* Mensaje principal */
+.section-mensaje {
+  padding: 40px 20px;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.section-mensaje .destacado {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 1.5em;
+  color: #111;
+}
+
+.section-mensaje .destacado span {
+  color: #b87333;
+}
+
+/* Formularios */
+#registro, #login, #recuperar {
+  display: none;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 30px 20px;
+  margin: 30px auto;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #00796B;
+  border-radius: 5px;
+}
+
+.input-error {
+  border: 1px solid red;
+}
+
+/* Botones dentro de formularios */
+button {
+  padding: 10px;
+  background-color: #00796B;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #004D40;
+}
+
+/* Botón secundario (logout o volver atrás) */
+.boton-secundario {
+  margin-top: 30px;
+  padding: 10px 20px;
+  background-color: transparent;
+  border: 1px solid #444;
+  color: #444;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+}
+
+.boton-secundario:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ícono de perfil en la esquina superior derecha */
+.perfil-circulo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.perfil-circulo.visible {
+  opacity: 1;
+}
+
+.perfil-icono {
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: relative;
+}
+
+.perfil-icono::after {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.perfil-circulo:hover {
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+  #registro, #login, #recuperar {
+    margin: 20px 10px;
+    padding: 20px 15px;
+  }
+
+  .perfil-circulo {
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .perfil-icono {
+    width: 16px;
+    height: 16px;
+  }
+
+  .perfil-icono::after {
+    width: 22px;
+    height: 12px;
+  }
+}
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #000; /* Fondo negro para coherencia */
+  color: #fff; /* Letras blancas */
+}
+
+.contenedor-bienvenida {
+  padding: 40px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.mensaje-motivacional {
+  font-size: 1em;
+  color: #ccc;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* Ícono de perfil */
+.perfil-circulo {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #00796B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
+  z-index: 1001;
+}
+
+.perfil-circulo:hover {
+  background-color: #004D40;
+}
+
+.perfil-icono {
+  width: 24px;
+  height: 24px;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/></svg>');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Panel lateral con efecto vidrio */
+.panel-perfil {
+  position: fixed;
+  top: 0;
+  right: -260px;
+  width: 260px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  transition: right 0.4s ease;
+  z-index: 1000;
+  box-shadow: -4px 0 10px rgba(0,0,0,0.5);
+}
+
+.panel-perfil.activo {
+  right: 0;
+}
+
+.panel-contenido {
+  padding: 20px;
+}
+
+.cerrar-panel {
+  font-size: 1.5em;
+  cursor: pointer;
+  display: block;
+  text-align: right;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.panel-contenido ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.panel-contenido li {
+  padding: 12px 0;
+  border-bottom: 1px solid #444;
+  cursor: pointer;
+  font-size: 1em;
+  transition: color 0.2s ease;
+  color: #fff;
+}
+
+.panel-contenido li:hover {
+  color: #00E676;
+}
