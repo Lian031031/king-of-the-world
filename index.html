@@ -12,12 +12,8 @@
     <p>Visión. Elegancia. Poder.</p>
   </header>
 
-  <section class="bienvenido">
-    <h2>Bienvenido</h2>
-    <p>Soy Lian. Esta página es mi carta de presentación. Aquí comparto mis servicios, productos y visión como emprendedor.</p>
-  </section>
-
-  <section class="section-mensaje" id="mensaje">
+  <!-- Sección de bienvenida -->
+  <section class="bienvenido" id="mensaje">
     <h2>No todos están listos para este nivel.</h2>
     <p class="mensaje-transformador">
       Pero si tú lo estás, aquí no solo encontrarás visión y propósito.<br>
@@ -32,40 +28,131 @@
   </section>
 
   <!-- Formulario de registro -->
-  <section id="registro">
+  <section id="registro" style="display:none;">
     <h2>Hazte miembro</h2>
-    <form>
+    <form id="formRegistro">
       <input type="text" id="nombre" placeholder="Nombre completo" required>
       <input type="email" id="correo" placeholder="Correo electrónico" required>
       <input type="password" id="password" placeholder="Contraseña" required>
       <input type="password" id="confirmar" placeholder="Confirmar contraseña" required>
-      <button type="button" onclick="validarRegistro()">Registrarme</button>
+      <button type="submit">Registrarme</button>
       <button type="button" onclick="volver()">Volver atrás</button>
     </form>
   </section>
 
   <!-- Formulario de login -->
-  <section id="login">
+  <section id="login" style="display:none;">
     <h2>Inicio de sesión</h2>
-    <form>
+    <form id="formLogin">
       <input type="email" id="loginCorreo" placeholder="Correo electrónico" required>
       <input type="password" id="loginPassword" placeholder="Contraseña" required>
-      <button type="button" onclick="validarLogin()">Entrar</button>
+      <button type="submit">Entrar</button>
       <button type="button" onclick="volver()">Volver atrás</button>
       <a href="javascript:void(0);" onclick="mostrarRecuperacion()" style="color:#00796B; font-size:0.9em;">¿Olvidaste tu contraseña?</a>
     </form>
   </section>
 
-  <!-- Formulario de recuperación -->
-  <section id="recuperar">
+  <!-- Formulario de recuperación adaptado a EmailJS -->
+  <section id="recuperar" style="display:none;">
     <h2>Recuperar contraseña</h2>
-    <form>
-      <input type="email" id="recuperarCorreo" placeholder="Correo registrado" required>
-      <button type="button" onclick="recuperarPassword()">Enviar nueva contraseña</button>
+    <form id="formRecuperar">
+      <input type="text" name="name" id="recuperarNombre" placeholder="Tu nombre" required>
+      <input type="email" name="email" id="recuperarCorreo" placeholder="Correo registrado" required>
+      <input type="text" name="title" value="Recuperación de contraseña" style="display:none;">
+      <textarea name="content" style="display:none;">
+Tu nueva contraseña es: Rey2025🔥  
+Recuerda: los líderes no se rinden, se reinventan.
+      </textarea>
+      <button type="submit">Enviar nueva contraseña</button>
       <button type="button" onclick="volver()">Volver atrás</button>
+      <div id="mensajeExito" style="margin-top:10px; color:#0f0;"></div>
     </form>
   </section>
 
-  <script src="main.js"></script>
+  <!-- Scripts -->
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    // Inicializar EmailJS
+    (function() {
+      emailjs.init("JoDSLYti5HhPdIQ-m");
+    })();
+
+    // Mostrar secciones
+    function mostrarRegistro() {
+      document.getElementById("mensaje").style.display = "none";
+      document.getElementById("registro").style.display = "block";
+    }
+
+    function mostrarLogin() {
+      document.getElementById("mensaje").style.display = "none";
+      document.getElementById("login").style.display = "block";
+    }
+
+    function mostrarRecuperacion() {
+      document.getElementById("login").style.display = "none";
+      document.getElementById("recuperar").style.display = "block";
+    }
+
+    function volver() {
+      document.getElementById("registro").style.display = "none";
+      document.getElementById("login").style.display = "none";
+      document.getElementById("recuperar").style.display = "none";
+      document.getElementById("mensaje").style.display = "block";
+    }
+
+    // Recuperación por EmailJS
+    document.getElementById("formRecuperar").addEventListener("submit", function(e) {
+      e.preventDefault();
+      emailjs.sendForm("kingoftheworld031031", "template_h2ft9ts", this)
+        .then(function(response) {
+          document.getElementById("mensajeExito").innerText = "✅ Contraseña enviada con éxito. Revisa tu correo.";
+        }, function(error) {
+          document.getElementById("mensajeExito").innerText = "❌ Error al enviar. Intenta de nuevo.";
+          console.error("Error:", error);
+        });
+    });
+
+    // Registro
+    document.getElementById("formRegistro").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const nombre = document.getElementById("nombre").value;
+      const correo = document.getElementById("correo").value;
+      const password = document.getElementById("password").value;
+      const confirmar = document.getElementById("confirmar").value;
+
+      if (password !== confirmar) {
+        alert("Las contraseñas no coinciden.");
+        return;
+      }
+
+      const nuevoUsuario = { nombre, correo, clave: password };
+      const usuarios = JSON.parse(localStorage.getItem("usuariosRegistrados")) || [];
+      usuarios.push(nuevoUsuario);
+      localStorage.setItem("usuariosRegistrados", JSON.stringify(usuarios));
+      localStorage.setItem("usuarioActivo", JSON.stringify({ nombre, correo }));
+
+      window.location.href = "bienvenido.html";
+    });
+
+    // Login
+    document.getElementById("formLogin").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const correo = document.getElementById("loginCorreo").value;
+      const clave = document.getElementById("loginPassword").value;
+
+      const usuarios = JSON.parse(localStorage.getItem("usuariosRegistrados")) || [];
+      const usuarioEncontrado = usuarios.find(u => u.correo === correo && u.clave === clave);
+
+      if (usuarioEncontrado) {
+        localStorage.setItem("usuarioActivo", JSON.stringify({
+          nombre: usuarioEncontrado.nombre || "Miembro",
+          correo: usuarioEncontrado.correo
+        }));
+        window.location.href = "bienvenido.html";
+      } else {
+        alert("Credenciales incorrectas.");
+      }
+    });
+  </script>
 </body>
 </html>
