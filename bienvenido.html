@@ -5,14 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bienvenido</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .guardados-contenido ul {
+      list-style: none;
+      margin: 10px 0 0;
+      padding-left: 0;
+    }
+
+    .guardados-contenido li {
+      margin: 8px 0;
+    }
+
+    .guardados-contenido a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .guardados-contenido a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
   <div class="contenedor-bienvenida">
     <h1>Bienvenido, <span id="nombreUsuario"></span></h1>
-    <p class="mensaje-motivacional">
-      Cada refinamiento que haces, cada detalle que ajustas, es una declaración silenciosa de liderazgo.<br>
-      Tu marca no se adapta al mundo. El mundo se adapta a tu marca. 👑
-    </p>
+    <p class="mensaje-motivacional texto-blanco" id="mensajeMotivacional"></p>
 
     <!-- Ícono de perfil -->
     <div id="perfil" class="perfil-circulo" title="Mi perfil" onclick="togglePanel()">
@@ -25,52 +43,99 @@
         <span class="cerrar-panel" onclick="togglePanel()">×</span>
         <ul>
           <li onclick="cerrarSesion()">Cerrar sesión</li>
-          <!-- <li>Editar perfil</li> -->
-          <!-- <li>Mi cuenta</li> -->
+          <li onclick="toggleGuardados()">Guardados ▼</li>
         </ul>
+        <div id="contenedorGuardados" class="guardados-contenido" style="display:none;">
+          <ul id="listaGuardados"></ul>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Sección del libro actualizada -->
+  <section class="seccion-libro">
+    <div class="libro-contenido">
+      <h2>📖 King of the World</h2>
+      <h3 class="subtitulo-libro">Los placeres de la vida</h3>
+      <p class="descripcion-libro">
+        Más que un libro, es una mentoría silenciosa.  
+        Una guía para conquistar los placeres más elevados de la vida con propósito y elegancia.
+      </p>
+      <p class="precio-libro">💵 Precio: <strong>$5 USD</strong></p>
+      <a href="acceso.html" class="boton-pagar">
+        Acceder a la mentoría
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Rey del Mundo. Todos los derechos reservados.</p>
+  </footer>
+
   <script>
-    let usuario = null;
-    try {
-      usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
-    } catch (e) {
-      usuario = null;
-    }
+  let usuario = null;
+  try {
+    usuario = JSON.parse(localStorage.getItem("usuarioActivo"));
+  } catch (e) {
+    usuario = null;
+  }
 
-    if (!usuario) {
-      window.location.href = "index.html";
-    } else {
-      document.getElementById("nombreUsuario").textContent = usuario.nombre || "Usuario";
-      document.getElementById("perfil").classList.add("visible");
-    }
+  if (!usuario) {
+    window.location.href = "index.html";
+  } else {
+    const nombre = usuario.nombre || "Usuario";
+    document.getElementById("nombreUsuario").textContent = nombre;
+    document.getElementById("perfil").classList.add("visible");
 
-    function togglePanel() {
-      const panel = document.getElementById("panelPerfil");
-      panel.classList.toggle("activo");
-    }
-  
+    document.getElementById("mensajeMotivacional").innerHTML = `
+      ${nombre}, cada refinamiento que haces, cada detalle que ajustas, es una declaración silenciosa de liderazgo.<br>
+      Tu marca no se adapta al mundo. El mundo se adapta a tu marca. 👑
+    `;
 
-    function cerrarSesion() {
-      localStorage.removeItem("usuarioActivo");
-      window.location.href = "index.html";
-    }
+    mostrarGuardados(); // 👑 Solo guardados por usuario
+  }
 
-    document.addEventListener("click", function(e) {
-      const perfil = document.getElementById("perfil");
-      const panel = document.getElementById("panelPerfil");
-      if (!perfil.contains(e.target) && !panel.contains(e.target)) {
-        panel.classList.remove("activo");
-      }
+  function mostrarGuardados() {
+    const correo = usuario?.correo;
+    if (!correo) return;
+
+    const claveLista = `guardados_${correo}`;
+    const guardados = JSON.parse(localStorage.getItem(claveLista)) || [];
+    const lista = document.getElementById("listaGuardados");
+
+    guardados.forEach(item => {
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="${item.url}">📌 ${item.nombre}</a>`;
+      lista.appendChild(li);
     });
+  }
 
-    window.addEventListener("scroll", () => {
-      document.getElementById("panelPerfil").classList.remove("activo");
-    });
-  
-  
-  </script>
+  function togglePanel() {
+    const panel = document.getElementById("panelPerfil");
+    panel.classList.toggle("activo");
+  }
+
+  function toggleGuardados() {
+    const contenedor = document.getElementById("contenedorGuardados");
+    contenedor.style.display = contenedor.style.display === "none" ? "block" : "none";
+  }
+
+  function cerrarSesion() {
+    localStorage.removeItem("usuarioActivo");
+    window.location.href = "index.html";
+  }
+
+  document.addEventListener("click", function(e) {
+    const perfil = document.getElementById("perfil");
+    const panel = document.getElementById("panelPerfil");
+    if (!perfil.contains(e.target) && !panel.contains(e.target)) {
+      panel.classList.remove("activo");
+    }
+  });
+
+  window.addEventListener("scroll", () => {
+    document.getElementById("panelPerfil").classList.remove("activo");
+  });
+</script>
 </body>
 </html>
