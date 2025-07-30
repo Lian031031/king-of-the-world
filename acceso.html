@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acceso a la Mentoría</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <section class="seccion-libro">
+    <div class="libro-contenido">
+      <h2>🔐 Acceso exclusivo</h2>
+      <p class="descripcion-libro">
+        Realiza el pago de <strong>$5 USD</strong> para acceder a <em>“King of the World: Los placeres de la vida”</em>.<br>
+        Luego ingresa tu correo para validar el acceso.
+      </p>
+      <a href="https://www.paypal.com/paypalme/lian031031/5" target="_blank" class="boton-pagar">
+        Pagar con PayPal
+      </a>
+      <br><br>
+
+      <form id="formAcceso">
+        <input type="email" id="correoAcceso" placeholder="Correo usado en el pago" required />
+        <button type="submit" class="boton-continuar">Validar y acceder</button>
+      </form>
+
+      <p id="mensajeAcceso" style="margin-top:15px;"></p>
+
+      <!-- Botón para volver atrás -->
+      <a href="bienvenido.html" class="boton-volver">← Volver atrás</a>
+    </div>
+  </section>
+
+  <script>
+    async function validarCorreo(correoIngresado) {
+      const sheetUrl = "https://docs.google.com/spreadsheets/d/153nFmCZmAXcQLPoK352_aDhmctvm34rtacLatCwU9WM/export?format=csv&id=153nFmCZmAXcQLPoK352_aDhmctvm34rtacLatCwU9WM";
+
+      try {
+        const response = await fetch(sheetUrl);
+        const texto = await response.text();
+        const filas = texto.split("\n").map(row => row.split(","));
+        const correos = filas.slice(1).map(row => row[0].trim().toLowerCase());
+
+        if (correos.includes(correoIngresado.toLowerCase())) {
+          localStorage.setItem("accesoLibro", "autorizado");
+          localStorage.setItem("correoUsuario", correoIngresado);
+          window.location.href = "libro.html";
+        } else {
+          document.getElementById("mensajeAcceso").textContent = "❌ Acceso denegado. Este correo no está registrado.";
+        }
+      } catch (error) {
+        document.getElementById("mensajeAcceso").textContent = "⚠️ Error al validar. Intenta de nuevo más tarde.";
+        console.error("Error al acceder a la hoja:", error);
+      }
+    }
+
+    document.getElementById("formAcceso").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const correo = document.getElementById("correoAcceso").value.trim();
+      validarCorreo(correo);
+    });
+  </script>
+</body>
+</html>

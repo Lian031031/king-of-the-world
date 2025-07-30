@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>King of the World | Libro</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .modal-guardar {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-contenido {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      max-width: 300px;
+      margin: auto;
+    }
+
+    .modal-contenido button {
+      margin: 10px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      background-color: #222;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .modal-contenido button:hover {
+      background-color: #444;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const acceso = localStorage.getItem("accesoLibro");
+    if (acceso !== "autorizado") {
+      window.location.href = "acceso.html";
+    }
+  </script>
+
+  <div id="modalGuardar" class="modal-guardar">
+    <div class="modal-contenido">
+      <p>📥 ¿Deseas guardar este contenido para acceder desde la sección "Guardados"?</p>
+      <button onclick="guardarLibro()">Guardar</button>
+      <button onclick="cerrarModal()">Cancelar</button>
+    </div>
+  </div>
+
+  <section class="seccion-libro">
+    <div class="libro-contenido">
+      <h2>📖 King of the World</h2>
+      <h3 class="subtitulo-libro">Los placeres de la vida</h3>
+      <p class="descripcion-libro">
+        Bienvenido a la mentoría. Aquí comienza tu transformación.<br>
+        Este espacio será actualizado con capítulos, reflexiones y herramientas para conquistar tu mundo.
+      </p>
+
+      <a href="bienvenido.html" class="boton-volver">← Volver al inicio</a>
+    </div>
+  </section>
+
+  <script>
+  window.onload = function () {
+    const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
+    const correo = usuarioActivo?.correo;
+    if (!correo) return;
+
+    const claveLista = `guardados_${correo}`;
+    const lista = JSON.parse(localStorage.getItem(claveLista)) || [];
+    const yaExiste = lista.some(item => item.url === "libro.html");
+
+    if (!yaExiste) {
+      document.getElementById("modalGuardar").style.display = "flex";
+    }
+  };
+
+  function guardarLibro() {
+    const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
+    const correo = usuarioActivo?.correo;
+    if (!correo) return;
+
+    const claveLista = `guardados_${correo}`;
+    const libroActual = { nombre: "King of the World", url: "libro.html" };
+
+    let listaGuardados = JSON.parse(localStorage.getItem(claveLista)) || [];
+    listaGuardados.push(libroActual);
+    localStorage.setItem(claveLista, JSON.stringify(listaGuardados));
+    document.getElementById("modalGuardar").style.display = "none";
+    mostrarGuardadoExitoso();
+  }
+
+  function cerrarModal() {
+    document.getElementById("modalGuardar").style.display = "none";
+  }
+
+  function mostrarGuardadoExitoso() {
+    const mensaje = document.createElement("div");
+    mensaje.innerText = "💾 Mentoría guardada. Ya forma parte de tu legado.";
+    mensaje.className = "mensaje-exito";
+    document.body.appendChild(mensaje);
+    setTimeout(() => mensaje.remove(), 4000);
+  }
+</script>
+</body>
+</html>
