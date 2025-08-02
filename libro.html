@@ -6,6 +6,14 @@
   <title>King of the World | Libro</title>
   <link rel="stylesheet" href="style.css" />
   <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
     .modal-guardar {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -38,6 +46,78 @@
     .modal-contenido button:hover {
       background-color: #444;
     }
+
+    .seccion-libro {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .libro-contenido h2 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .subtitulo-libro {
+      font-size: 1.4em;
+      color: #f5c518;
+      margin-bottom: 20px;
+    }
+
+    .descripcion-libro {
+      font-size: 1em;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+
+    .boton-volver {
+      display: inline-block;
+      margin-bottom: 40px;
+      color: #000; /* ← Color negro aplicado */
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .boton-volver:hover {
+      text-decoration: underline;
+      color: #fff;
+    }
+
+    .visor-pdf {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      margin: 0 auto;
+      max-width: 800px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .visor-pdf a {
+      color: #ffd700;
+      text-decoration: none;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .visor-pdf a:hover {
+      text-decoration: underline;
+      color: #fff;
+    }
+
+    .mensaje-exito {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #222;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      font-size: 0.95em;
+      z-index: 1001;
+    }
   </style>
 </head>
 <body>
@@ -67,49 +147,59 @@
 
       <a href="bienvenido.html" class="boton-volver">← Volver al inicio</a>
     </div>
+
+    <!-- Redirección a tomo1.html -->
+    <div class="visor-pdf">
+      <a href="tomo1.html">
+        📘 Tomo 1: Mentoría en acción
+      </a>
+      <p style="margin-top:10px; font-size:0.9em; color:#ccc;">
+        Haz clic en el título para ver el contenido completo en otra página.
+      </p>
+    </div>
   </section>
 
   <script>
-  window.onload = function () {
-    const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
-    const correo = usuarioActivo?.correo;
-    if (!correo) return;
+    window.onload = function () {
+      const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
+      const correo = usuarioActivo?.correo;
+      if (!correo) return;
 
-    const claveLista = `guardados_${correo}`;
-    const lista = JSON.parse(localStorage.getItem(claveLista)) || [];
-    const yaExiste = lista.some(item => item.url === "libro.html");
+      const claveLista = `guardados_${correo}`;
+      const lista = JSON.parse(localStorage.getItem(claveLista)) || [];
+      const yaExiste = lista.some(item => item.url === "libro.html");
 
-    if (!yaExiste) {
-      document.getElementById("modalGuardar").style.display = "flex";
+      if (!yaExiste) {
+        document.getElementById("modalGuardar").style.display = "flex";
+      }
+    };
+
+    function guardarLibro() {
+      const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
+      const correo = usuarioActivo?.correo;
+      if (!correo) return;
+
+      const claveLista = `guardados_${correo}`;
+      const libroActual = { nombre: "King of the World", url: "libro.html" };
+
+      let listaGuardados = JSON.parse(localStorage.getItem(claveLista)) || [];
+      listaGuardados.push(libroActual);
+      localStorage.setItem(claveLista, JSON.stringify(listaGuardados));
+      document.getElementById("modalGuardar").style.display = "none";
+      mostrarGuardadoExitoso();
     }
-  };
 
-  function guardarLibro() {
-    const usuarioActivo = JSON.parse(localStorage.getItem("usuarioActivo"));
-    const correo = usuarioActivo?.correo;
-    if (!correo) return;
+    function cerrarModal() {
+      document.getElementById("modalGuardar").style.display = "none";
+    }
 
-    const claveLista = `guardados_${correo}`;
-    const libroActual = { nombre: "King of the World", url: "libro.html" };
-
-    let listaGuardados = JSON.parse(localStorage.getItem(claveLista)) || [];
-    listaGuardados.push(libroActual);
-    localStorage.setItem(claveLista, JSON.stringify(listaGuardados));
-    document.getElementById("modalGuardar").style.display = "none";
-    mostrarGuardadoExitoso();
-  }
-
-  function cerrarModal() {
-    document.getElementById("modalGuardar").style.display = "none";
-  }
-
-  function mostrarGuardadoExitoso() {
-    const mensaje = document.createElement("div");
-    mensaje.innerText = "💾 Mentoría guardada. Ya forma parte de tu legado.";
-    mensaje.className = "mensaje-exito";
-    document.body.appendChild(mensaje);
-    setTimeout(() => mensaje.remove(), 4000);
-  }
-</script>
+    function mostrarGuardadoExitoso() {
+      const mensaje = document.createElement("div");
+      mensaje.innerText = "💾 Mentoría guardada. Ya forma parte de tu legado.";
+      mensaje.className = "mensaje-exito";
+      document.body.appendChild(mensaje);
+      setTimeout(() => mensaje.remove(), 4000);
+    }
+  </script>
 </body>
 </html>
